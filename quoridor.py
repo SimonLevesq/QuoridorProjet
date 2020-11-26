@@ -219,7 +219,7 @@ class Quoridor:
         self.joueur = joueur
         if self.joueur != 1 or self.joueur != 2:
             raise QuoridorError('Le numéro du joueur est autre que 1 ou 2.')
-        if partie_términée:
+        if partie_terminée:
             raise QuoridorError('La partie est déjà terminée.')
         x = self.joueur[0]['pos'][0]
         X = self.joueur[1]['pos'][0]
@@ -254,7 +254,19 @@ class Quoridor:
         pass
 
     def partie_terminée(self):
-        """Déterminer si la partie est terminée.
+        y1 = joueurs[0]['pos'][1]
+        y2 = joueurs[1]['pos'][1]
+
+        if (9-y1) > y2 and y1 == 9:
+            return (True, joueurs[0]['nom'])
+
+        if (9-y1) < y2 and y2 == 1:
+            return(True, joueurs[1]['nom'])
+        
+        else:
+            return False
+
+
         Returns:
             str/bool: Le nom du gagnant si la partie est terminée; False autrement.
         """
