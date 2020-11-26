@@ -1,7 +1,8 @@
 import networkx as nx
 
 
-# TODO: Définissez votre classe QuoridorError ici.
+class QuoridorError(Exception):
+    pass
 
 
 class Quoridor:
@@ -285,6 +286,18 @@ class Quoridor:
             QuoridorError: La position est invalide pour cette orientation.
             QuoridorError: Le joueur a déjà placé tous ses murs.
         """
+                if joueur > 2 or joueur < 1:
+                    raise QuoridorError("Le numéro du joueur est autre que 1 ou 2.")
+
+                for i in self.murs[horizontaux]:
+                    if orientaion == horizontal and (i[0] == position[0] and (i[1] == position[1] or i[1] == position[1]+1 or i[1] == position[1]-1)):
+                        raise QuoridorError("Un mur occupe déjà cette position.")
+                    if orientaion == vertical and i[]
+
+                for i in self.murs[verticaux]:
+                    if orientaion == vertical and (i[1] == position[1] and (i[0] == position[0] or i[0] == position[0]+1 or i[0] == position[0]-1)):
+                        raise QuoridorError("Un mur occupe déjà cette position.")
+                    
         pass
 
 
