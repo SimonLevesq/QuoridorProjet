@@ -259,10 +259,10 @@ class Quoridor:
         y2 = joueurs[1]['pos'][1]
 
         if (9-y1) > y2 and y1 == 9:
-            return (True, joueurs[0]['nom'])
+            return (joueurs[0]['nom'])
 
         if (9-y1) < y2 and y2 == 1:
-            return(True, joueurs[1]['nom'])
+            return(joueurs[1]['nom'])
         
         else:
             return False
