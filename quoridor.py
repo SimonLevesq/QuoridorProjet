@@ -216,6 +216,28 @@ class Quoridor:
         pass
 
     def jouer_coup(self, joueur):
+        self.joueur = joueur
+        if self.joueur != 1 or self.joueur != 2:
+            raise QuoridorError('Le numéro du joueur est autre que 1 ou 2.')
+        if partie_términée:
+            raise QuoridorError('La partie est déjà terminée.')
+        x = self.joueur[0]['pos'][0]
+        X = self.joueur[1]['pos'][0]
+        y = self.joueur[0]['pos'][1]
+        Y = self.joueur[1]['pos'][1]
+
+        if (9-y) > Y:
+            déplacer_jeton(self, joueur[0], (x, y+1)
+            return ('déplacer jeton', (x+1, y))
+        
+        if y == Y:
+            placer_mur(self, joueur[0], (X+1, Y), horizontal)
+            return ('placer mur horizontal', (X+1, Y))
+        
+        if y < Y:
+            placer_mur(self, joueur[0], (X-1, Y-1), vertical)
+            return ('placer mur vertical', (X-1, Y-1))
+
         """Jouer un coup automatique pour un joueur.
         Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel
         de la partie. Ce coup est soit le déplacement de son jeton, soit le placement d'un
