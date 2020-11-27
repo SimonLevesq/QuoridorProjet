@@ -229,7 +229,7 @@ class Quoridor:
 
         if (9-y) > Y:
             déplacer_jeton(self, joueur[0], (x, y+1)
-            return ('déplacer jeton', (x+1, y))
+            return('déplacer jeton', (x, y+1))
         
         if y == Y:
             placer_mur(self, joueur[0], (X+1, Y), horizontal)
