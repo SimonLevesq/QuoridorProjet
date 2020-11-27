@@ -177,12 +177,32 @@ class Quoridor:
             QuoridorError: La position est invalide (en dehors du damier).
             QuoridorError: La position est invalide pour l'état actuel du jeu.
         """
+        posjoueur = self.joueurs[joueur-1]['pos']
+
         if joueur > 2 or joueur < 1:
             raise QuoridorError("Le numéro du joueur est autre que 1 ou 2.")
+        
         if position[0] > 9 or position[0] < 1 or position[1] > 9 or position[1] < 1:
             raise QuoridorError("La position est invalide (en dehors du damier).")
-        if abs(position[0] - self.joueurs[joueur-1]['pos'][0]) > 1 or abs(position[1] - self.joueurs[joueur-1]['pos'][1]) > 1:
+        
+        if abs(position[0] - posjoueur[0]) > 1 or abs(position[1] - posjoueur[1]) > 1:
             raise QuoridorError("La position est invalide pour l'état actuel du jeu.")
+        
+        if position == self.joueurs[0]['pos'] or position == self.joueurs[1]['pos']:
+            raise QuoridorError("La position est invalide pour l'état actuel du jeu.")
+        
+        for i in self.murs['horizontaux']: 
+            if (posjoueur[0] == i[0] or posjoueur[0] == i[0]+1) and (posjoueur[1] == i[1]-1) and position[1] == i[1]:
+                raise QuoridorError("La position est invalide pour l'état actuel du jeu.")
+            if (posjoueur[0] == i[0] or posjoueur[0] == i[0]+1) and (posjoueur[1] == i[1]) and position[1] == i[1]-1:
+                raise QuoridorError("La position est invalide pour l'état actuel du jeu.")
+
+        for i in self.murs['verticaux']: 
+            if (posjoueur[1] == i[1] or posjoueur[1] == i[1]+1) and (posjoueur[0] == i[0]-1) and position[0] == i[0]:
+                raise QuoridorError("La position est invalide pour l'état actuel du jeu.")
+            if (posjoueur[1] == i[1] or posjoueur[1] == i[1]+1) and (posjoueur[0] == i[0]) and (position[0] == i[0]-1):
+                raise QuoridorError("La position est invalide pour l'état actuel du jeu.")
+  
         else:
             self.joueurs[joueur-1]['pos'] =  position
         pass
@@ -217,26 +237,25 @@ class Quoridor:
         pass
 
     def jouer_coup(self, joueur):
-        self.joueur = joueur
-        if self.joueur != 1 or self.joueur != 2:
+        if joueur < 1 or joueur > 2:
             raise QuoridorError('Le numéro du joueur est autre que 1 ou 2.')
-        if partie_terminée:
+        if Quoridor.partie_terminée(self):
             raise QuoridorError('La partie est déjà terminée.')
-        x = self.joueur[0]['pos'][0]
-        X = self.joueur[1]['pos'][0]
-        y = self.joueur[0]['pos'][1]
-        Y = self.joueur[1]['pos'][1]
+        x = self.joueurs[0]['pos'][0]
+        X = self.joueurs[1]['pos'][0]
+        y = self.joueurs[0]['pos'][1]
+        Y = self.joueurs[1]['pos'][1]
 
         if (9-y) > Y:
-            déplacer_jeton(self, joueur[0], (x, y+1)
-            return ('déplacer jeton', (x+1, y))
+            Quoridor.déplacer_jeton(self, joueur, (x, y+1))
+            return ('déplacer jeton', (x, y+1))
         
         if y == Y:
-            placer_mur(self, joueur[0], (X+1, Y), horizontal)
+            Quoridor.placer_mur(self, joueur, (X+1, Y), 'horizontal')
             return ('placer mur horizontal', (X+1, Y))
         
         if y < Y:
-            placer_mur(self, joueur[0], (X-1, Y-1), vertical)
+            Quoridor.placer_mur(self, joueur, (X-1, Y-1), 'vertical')
             return ('placer mur vertical', (X-1, Y-1))
 
         """Jouer un coup automatique pour un joueur.
@@ -255,19 +274,19 @@ class Quoridor:
         pass
 
     def partie_terminée(self):
-        y1 = joueurs[0]['pos'][1]
-        y2 = joueurs[1]['pos'][1]
+        y1 = self.joueurs[0]['pos'][1]
+        y2 = self.joueurs[1]['pos'][1]
 
-        if (9-y1) > y2 and y1 == 9:
-            return (joueurs[0]['nom'])
+        if y1 == 9:
+            return (self.joueurs[0]['nom'])
 
-        if (9-y1) < y2 and y2 == 1:
-            return(joueurs[1]['nom'])
+        if y2 == 1:
+            return (self.joueurs[1]['nom'])
         
         else:
             return False
 
-
+        """
         Returns:
             str/bool: Le nom du gagnant si la partie est terminée; False autrement.
         """
@@ -286,22 +305,118 @@ class Quoridor:
             QuoridorError: La position est invalide pour cette orientation.
             QuoridorError: Le joueur a déjà placé tous ses murs.
         """
-                if joueur > 2 or joueur < 1:
-                    raise QuoridorError("Le numéro du joueur est autre que 1 ou 2.")
+        if joueur > 2 or joueur < 1:
+            raise QuoridorError("Le numéro du joueur est autre que 1 ou 2.")
 
-                for i in self.murs[horizontaux]:
-                    if orientaion == horizontal and (i[0] == position[0] and (i[1] == position[1] or i[1] == position[1]+1 or i[1] == position[1]-1)):
-                        raise QuoridorError("Un mur occupe déjà cette position.")
-                    if orientaion == vertical and i[]
+        for i in self.murs['horizontaux']:
+            if orientation == 'horizontal' and (i[0] == position[0] and (i[1] == position[1] or i[1] == position[1]+1 or i[1] == position[1]-1)):
+                raise QuoridorError("Un mur occupe déjà cette position.")
+            if orientation == 'vertical' and (i[0]-1 == position[0] and i[1]+1 == position[1]):
+                raise QuoridorError("Un mur occupe déjà cette position.")
 
-                for i in self.murs[verticaux]:
-                    if orientaion == vertical and (i[1] == position[1] and (i[0] == position[0] or i[0] == position[0]+1 or i[0] == position[0]-1)):
-                        raise QuoridorError("Un mur occupe déjà cette position.")
-                    
+        for i in self.murs['verticaux']:
+            if orientation == 'vertical' and (i[1] == position[1] and (i[0] == position[0] or i[0] == position[0]+1 or i[0] == position[0]-1)):
+                raise QuoridorError("Un mur occupe déjà cette position.")
+            if orientation == 'horizontal' and (i[0]+1 == position[0] and i[1]-1 == position[1]):
+                raise QuoridorError("Un mur occupe déjà cette position.")
+
+        if (orientation == 'horizontal' and (position[0] >= 9 or position[1] <= 1)):
+            raise QuoridorError("La position est invalide pour cette orientation.")
+        
+        if (orientation == 'vertical' and (position[1] >= 9 or position[1] <= 1)):
+            raise QuoridorError("La position est invalide pour cette orientation.")
+        
+        if position[0] < 1 or position[1] < 1 or position[0] > 9 or position[1] > 9:
+            raise QuoridorError("La position est invalide pour cette orientation.")
+
+        if self.joueurs[joueur-1]['murs'] == 0:
+            raise QuoridorError("Le joueur a déjà placé tous ses murs.")
+        
+        else:
+            self.joueurs[joueur-1]['murs'] -= 1
+            if orientation =='horizontal':
+                self.murs['horizontaux'].append(position)
+            else:
+                self.murs['verticaux'].append(position)
         pass
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
+    """Construire un graphe de la grille.
+    Crée le graphe des déplacements admissibles pour les joueurs.
+    Vous n'avez pas à modifer cette fonction.
+    Args:
+        joueurs (List[Tuple]): une liste des positions (x,y) des joueurs.
+        murs_horizontaux (List[Tuple]): une liste des positions (x,y) des murs horizontaux.
+        murs_verticaux (List[Tuple]): une liste des positions (x,y) des murs verticaux.
+    Returns:
+        DiGraph: le graphe bidirectionnel (en networkX) des déplacements admissibles.
+    """
+    graphe = nx.DiGraph()
+
+    # pour chaque colonne du damier
+    for x in range(1, 10):
+        # pour chaque ligne du damier
+        for y in range(1, 10):
+            # ajouter les arcs de tous les déplacements possibles pour cette tuile
+            if x > 1:
+                graphe.add_edge((x, y), (x-1, y))
+            if x < 9:
+                graphe.add_edge((x, y), (x+1, y))
+            if y > 1:
+                graphe.add_edge((x, y), (x, y-1))
+            if y < 9:
+                graphe.add_edge((x, y), (x, y+1))
+
+    # retirer tous les arcs qui croisent les murs horizontaux
+    for x, y in murs_horizontaux:
+        graphe.remove_edge((x, y-1), (x, y))
+        graphe.remove_edge((x, y), (x, y-1))
+        graphe.remove_edge((x+1, y-1), (x+1, y))
+        graphe.remove_edge((x+1, y), (x+1, y-1))
+
+    # retirer tous les arcs qui croisent les murs verticaux
+    for x, y in murs_verticaux:
+        graphe.remove_edge((x-1, y), (x, y))
+        graphe.remove_edge((x, y), (x-1, y))
+        graphe.remove_edge((x-1, y+1), (x, y+1))
+        graphe.remove_edge((x, y+1), (x-1, y+1))
+
+    # s'assurer que les positions des joueurs sont bien des tuples (et non des listes)
+    j1, j2 = tuple(joueurs[0]), tuple(joueurs[1])
+
+    # traiter le cas des joueurs adjacents
+    if j2 in graphe.successors(j1) or j1 in graphe.successors(j2):
+
+        # retirer les liens entre les joueurs
+        graphe.remove_edge(j1, j2)
+        graphe.remove_edge(j2, j1)
+
+        def ajouter_lien_sauteur(noeud, voisin):
+            """
+            :param noeud: noeud de départ du lien.
+            :param voisin: voisin par dessus lequel il faut sauter.
+            """
+            saut = 2*voisin[0]-noeud[0], 2*voisin[1]-noeud[1]
+
+            if saut in graphe.successors(voisin):
+                # ajouter le saut en ligne droite
+                graphe.add_edge(noeud, saut)
+
+            else:
+                # ajouter les sauts en diagonale
+                for saut in graphe.successors(voisin):
+                    graphe.add_edge(noeud, saut)
+
+        ajouter_lien_sauteur(j1, j2)
+        ajouter_lien_sauteur(j2, j1)
+
+    # ajouter les destinations finales des joueurs
+    for x in range(1, 10):
+        graphe.add_edge((x, 9), 'B1')
+        graphe.add_edge((x, 1), 'B2')
+
+    return graphe
     """Construire un graphe de la grille.
     Crée le graphe des déplacements admissibles pour les joueurs.
     Vous n'avez pas à modifer cette fonction.
