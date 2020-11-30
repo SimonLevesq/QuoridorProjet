@@ -340,7 +340,6 @@ class Quoridor:
                 self.murs['verticaux'].append(position)
         pass
 
-
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
     """Construire un graphe de la grille.
     Crée le graphe des déplacements admissibles pour les joueurs.
