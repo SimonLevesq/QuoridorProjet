@@ -233,7 +233,7 @@ class Quoridor:
             situe entre les lignes y-1 et y, et bloque les colonnes x et x+1. De même, un
             mur vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
-        return {'joueurs': self.joueurs, 'murs': self.murs}        
+        return {'joueurs': self.joueurs, 'murs': self.murs}
         pass
 
     def jouer_coup(self, joueur):
