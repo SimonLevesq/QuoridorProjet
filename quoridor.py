@@ -180,8 +180,8 @@ class Quoridor:
             return ('déplacer jeton', (x, y+1))
         
         if y <= Y:
-            Quoridor.placer_mur(self, joueur, (X-1, Y-1), 'vertical')
-            return ('placer mur vertical', (X-1, Y-1))
+            Quoridor.placer_mur(self, joueur, (X-1, Y-1), 'horizontal')
+            return ('placer mur horizontal', (X-1, Y-1))
 
     def partie_terminée(self):
         y1 = self.joueurs[0]['pos'][1]
