@@ -233,7 +233,7 @@ class Quoridor:
             situe entre les lignes y-1 et y, et bloque les colonnes x et x+1. De même, un
             mur vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
-        return {'joueurs': self.joueurs, 'murs': self.murs}        
+        return {'joueurs': self.joueurs, 'murs': self.murs}
         pass
 
     def jouer_coup(self, joueur):
@@ -247,14 +247,20 @@ class Quoridor:
         Y = self.joueurs[1]['pos'][1]
 
         if (9-y) > Y:
+            for i in self.murs['horizontaux']:
+                if (i[0] == x or i[0] == x-1) and (i[1] == y+1):
+                    Quoridor.déplacer_jeton(self, joueur, (x+1, y))
+                    return ('déplacer jeton', (x+1, y))
+                
+            for i in self.murs['verticaux']:
+                if (i[0] == x-1) and (i[1] == y+1):
+                    Quoridor.déplacer_jeton(self, joueur, (x+1, y))
+                    return ('déplacer jeton', (x+1, y))
+
             Quoridor.déplacer_jeton(self, joueur, (x, y+1))
             return ('déplacer jeton', (x, y+1))
         
-        if y == Y:
-            Quoridor.placer_mur(self, joueur, (X+1, Y), 'horizontal')
-            return ('placer mur horizontal', (X+1, Y))
-        
-        if y < Y:
+        if y <= Y:
             Quoridor.placer_mur(self, joueur, (X-1, Y-1), 'vertical')
             return ('placer mur vertical', (X-1, Y-1))
 
